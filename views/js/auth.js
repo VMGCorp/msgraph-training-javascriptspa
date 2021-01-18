@@ -15,7 +15,8 @@ async function signIn() {
         user = await getUser();
         // Save the profile in session
         sessionStorage.setItem('graphUser', JSON.stringify(user));
-        updatePage(Views.home);
+        await getEvents();
+        //updatePage(Views.home);
     } catch (error) {
         console.log(error);
         updatePage(Views.error, {

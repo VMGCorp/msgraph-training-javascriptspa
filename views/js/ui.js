@@ -127,7 +127,34 @@ function showError(error) {
     mainContainer.appendChild(alert);
 }
 
-function showCalendar(events) {
+function showCalendar(user, events) {
+
+    // Create jumbotron
+    var jumbotron = createElement('div', 'jumbotron');
+
+    var heading = createElement('h1', null, 'Outlook calendar app');
+    jumbotron.appendChild(heading);
+
+    var lead = createElement('p', 'lead',
+        'Application allows you to fetch the calendar of logged in user.');
+    jumbotron.appendChild(lead);
+
+    if (user) {
+        // Welcome the user by name
+        var welcomeMessage = createElement('h4', null, `Welcome ${user.displayName}!`);
+        jumbotron.appendChild(welcomeMessage);
+
+        var callToAction = createElement('p', null,
+            'Use the navigation bar at the top of the page to get started.');
+        jumbotron.appendChild(callToAction);
+    } else {
+        // Show a sign in button in the jumbotron
+        var signInButton = createElement('button', 'btn btn-primary btn-large',
+            'Click here to sign in');
+        signInButton.setAttribute('onclick', 'signIn();')
+        jumbotron.appendChild(signInButton);
+    }
+
     let div = document.createElement('div');
 
     div.appendChild(createElement('h1', 'mb-3', 'Calendar'));
@@ -163,29 +190,30 @@ function showCalendar(events) {
 
     let tbody = document.createElement('tbody');
     table.appendChild(tbody);
+    if (events) {
+        for (const event of events) {
+            if (moment().diff(new Date(event.end.dateTime), 'minutes') <= 0) {
+                let eventrow = document.createElement('tr');
+                eventrow.setAttribute('key', event.id);
+                tbody.appendChild(eventrow);
 
-    for (const event of events) {
-        if (moment().diff(new Date(event.end.dateTime), 'minutes') <= 0) {
-            let eventrow = document.createElement('tr');
-            eventrow.setAttribute('key', event.id);
-            tbody.appendChild(eventrow);
+                let organizercell = createElement('td', null, event.organizer.emailAddress.name);
+                eventrow.appendChild(organizercell);
 
-            let organizercell = createElement('td', null, event.organizer.emailAddress.name);
-            eventrow.appendChild(organizercell);
+                let subjectcell = createElement('td', null, event.subject);
+                eventrow.appendChild(subjectcell);
 
-            let subjectcell = createElement('td', null, event.subject);
-            eventrow.appendChild(subjectcell);
+                // Use moment.utc() here because times are already in the user's
+                // preferred timezone, and we don't want moment to try to change them to the
+                // browser's timezone
+                let startcell = createElement('td', null,
+                    moment.utc(event.start.dateTime).format('M/D/YY h:mm A'));
+                eventrow.appendChild(startcell);
 
-            // Use moment.utc() here because times are already in the user's
-            // preferred timezone, and we don't want moment to try to change them to the
-            // browser's timezone
-            let startcell = createElement('td', null,
-                moment.utc(event.start.dateTime).format('M/D/YY h:mm A'));
-            eventrow.appendChild(startcell);
-
-            let endcell = createElement('td', null,
-                moment.utc(event.end.dateTime).format('M/D/YY h:mm A'));
-            eventrow.appendChild(endcell);
+                let endcell = createElement('td', null,
+                    moment.utc(event.end.dateTime).format('M/D/YY h:mm A'));
+                eventrow.appendChild(endcell);
+            }
         }
     }
 
@@ -284,10 +312,11 @@ function updatePage(view, data) {
             showError(data);
             break;
         case Views.home:
-            showWelcomeMessage(user);
+            //showWelcomeMessage(user);
+            showCalendar(user, data);
             break;
         case Views.calendar:
-            showCalendar(data);
+            showCalendar(user, data);
             break;
     }
 }
