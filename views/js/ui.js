@@ -165,26 +165,28 @@ function showCalendar(events) {
     table.appendChild(tbody);
 
     for (const event of events) {
-        let eventrow = document.createElement('tr');
-        eventrow.setAttribute('key', event.id);
-        tbody.appendChild(eventrow);
+        if (moment().diff(new Date(event.end.dateTime), 'minutes') <= 0) {
+            let eventrow = document.createElement('tr');
+            eventrow.setAttribute('key', event.id);
+            tbody.appendChild(eventrow);
 
-        let organizercell = createElement('td', null, event.organizer.emailAddress.name);
-        eventrow.appendChild(organizercell);
+            let organizercell = createElement('td', null, event.organizer.emailAddress.name);
+            eventrow.appendChild(organizercell);
 
-        let subjectcell = createElement('td', null, event.subject);
-        eventrow.appendChild(subjectcell);
+            let subjectcell = createElement('td', null, event.subject);
+            eventrow.appendChild(subjectcell);
 
-        // Use moment.utc() here because times are already in the user's
-        // preferred timezone, and we don't want moment to try to change them to the
-        // browser's timezone
-        let startcell = createElement('td', null,
-            moment.utc(event.start.dateTime).format('M/D/YY h:mm A'));
-        eventrow.appendChild(startcell);
+            // Use moment.utc() here because times are already in the user's
+            // preferred timezone, and we don't want moment to try to change them to the
+            // browser's timezone
+            let startcell = createElement('td', null,
+                moment.utc(event.start.dateTime).format('M/D/YY h:mm A'));
+            eventrow.appendChild(startcell);
 
-        let endcell = createElement('td', null,
-            moment.utc(event.end.dateTime).format('M/D/YY h:mm A'));
-        eventrow.appendChild(endcell);
+            let endcell = createElement('td', null,
+                moment.utc(event.end.dateTime).format('M/D/YY h:mm A'));
+            eventrow.appendChild(endcell);
+        }
     }
 
     mainContainer.innerHTML = '';
