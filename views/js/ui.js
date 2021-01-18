@@ -80,12 +80,11 @@ function showWelcomeMessage(user) {
     // Create jumbotron
     var jumbotron = createElement('div', 'jumbotron');
 
-    var heading = createElement('h1', null, 'JavaScript SPA Graph Tutorial');
+    var heading = createElement('h1', null, 'Outlook calendar app');
     jumbotron.appendChild(heading);
 
     var lead = createElement('p', 'lead',
-        'This sample app shows how to use the Microsoft Graph API to access' +
-        ' a user\'s data from JavaScript.');
+        'Application allows you to fetch the calendar of logged in user.');
     jumbotron.appendChild(lead);
 
     if (user) {
