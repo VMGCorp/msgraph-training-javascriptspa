@@ -1,5 +1,8 @@
 # Visual Studio Code
 .vscode/
+.idea/
 
 config.js
 custom.js
+
+package-lock.json
