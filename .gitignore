@@ -7,3 +7,5 @@ custom.js
 
 package-lock.json
 node_modules
+
+daemon/
