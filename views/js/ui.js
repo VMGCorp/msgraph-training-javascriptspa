@@ -80,8 +80,8 @@ function showWelcomeMessage(user) {
     // Create jumbotron
     var jumbotron = createElement('div', 'jumbotron');
 
-    var heading = createElement('h1', null, 'Outlook calendar app');
-    jumbotron.appendChild(heading);
+    //var heading = createElement('h1', null, 'Outlook calendar app');
+    //jumbotron.appendChild(heading);
 
     var lead = createElement('p', 'lead',
         'Application allows you to fetch the calendar of logged in user.');
@@ -132,8 +132,8 @@ function showCalendar(user, events) {
     // Create jumbotron
     var jumbotron = createElement('div', 'jumbotron');
 
-    var heading = createElement('h1', null, 'Outlook calendar app');
-    jumbotron.appendChild(heading);
+    //var heading = createElement('h1', null, 'Outlook calendar app');
+    //jumbotron.appendChild(heading);
 
     var lead = createElement('p', 'lead',
         'Application allows you to fetch the calendar of logged in user.');
@@ -159,7 +159,7 @@ function showCalendar(user, events) {
 
     div.appendChild(createElement('h1', 'mb-3', 'Calendar'));
 
-    let newEventButton = createElement('button', 'btn btn-light btn-sm mb-3', 'New event');
+    let newEventButton = createElement('button', 'btn btn-light btn-sm mb-3', 'New meeting');
     newEventButton.setAttribute('onclick', 'showNewEventForm();');
     div.appendChild(newEventButton);
 
@@ -207,11 +207,15 @@ function showCalendar(user, events) {
                 // preferred timezone, and we don't want moment to try to change them to the
                 // browser's timezone
                 let startcell = createElement('td', null,
-                    moment.utc(event.start.dateTime).format('M/D/YY h:mm A'));
+                    moment.utc(event.start.dateTime).format('YYYY-MM-DD HH:mm'));
+		//let startcell = createElement('td', null,
+                //    moment.utc(event.start.dateTime).format('M/D/YY h:mm A'));
                 eventrow.appendChild(startcell);
 
                 let endcell = createElement('td', null,
-                    moment.utc(event.end.dateTime).format('M/D/YY h:mm A'));
+                    moment.utc(event.end.dateTime).format('YYYY-MM-DD HH:mm'));
+		//let endcell = createElement('td', null,
+                //    moment.utc(event.end.dateTime).format('M/D/YY h:mm A'));
                 eventrow.appendChild(endcell);
             }
         }
