@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 
-app.use('/js', express.static(__dirname + '/views/js/'));
-app.use('/styles', express.static(__dirname + '/views/styles'));
+app.use('/calendar/js', express.static(__dirname + '/views/js/'));
+app.use('/calendar/styles', express.static(__dirname + '/views/styles'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
