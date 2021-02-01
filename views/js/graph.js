@@ -53,8 +53,8 @@ async function getEvents() {
                 .select('subject,organizer,start,end')
                 // Sort the results by start, earliest first
                 .orderby('start/dateTime')
-                // Maximum 50 events in response
-                .top(50)
+                // Maximum 7 events in response
+                .top(7)
                 .get();
 
             updatePage(Views.home, response.value);

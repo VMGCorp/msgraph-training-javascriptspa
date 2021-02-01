@@ -24,11 +24,9 @@ function showAuthenticatedNav(user, view) {
         // Add Calendar link
         var calendarNav = createElement('li', 'nav-item');
 
-        var calendarLink = createElement('button',
-            `btn btn-link nav-link${view === Views.calendar ? ' active' : '' }`,
-            'Calendar');
-        calendarLink.setAttribute('onclick', 'getEvents();');
-        calendarNav.appendChild(calendarLink);
+        var userName1 = createElement('h4', 'dropdown-item-text mb-0', user.displayName);
+        authenticatedNav.appendChild(userName1);
+
 
         authenticatedNav.appendChild(calendarNav);
     }
@@ -46,26 +44,13 @@ function showAccountNav(user) {
         dropdown.setAttribute('role', 'button');
         accountNav.appendChild(dropdown);
 
-        var userIcon = createElement('i',
-            'far fa-user-circle fa-lg rounded-circle align-self-center');
-        userIcon.style.width = '32px';
-        dropdown.appendChild(userIcon);
-
         var menu = createElement('div', 'dropdown-menu dropdown-menu-right');
         dropdown.appendChild(menu);
-
-        var userName = createElement('h5', 'dropdown-item-text mb-0', user.displayName);
-        menu.appendChild(userName);
-
-        var userEmail = createElement('p', 'dropdown-item-text text-muted mb-0', user.mail || user.userPrincipalName);
-        menu.appendChild(userEmail);
-
-        var divider = createElement('div', 'dropdown-divider');
-        menu.appendChild(divider);
 
         var signOutButton = createElement('button', 'dropdown-item', 'Sign out');
         signOutButton.setAttribute('onclick', 'signOut();');
         menu.appendChild(signOutButton);
+
     } else {
         // Show a "sign in" button
         accountNav.className = 'nav-item';
@@ -73,15 +58,13 @@ function showAccountNav(user) {
         var signInButton = createElement('button', 'btn btn-link nav-link', 'Sign in');
         signInButton.setAttribute('onclick', 'signIn();');
         accountNav.appendChild(signInButton);
+
     }
 }
 
 function showWelcomeMessage(user) {
     // Create jumbotron
     var jumbotron = createElement('div', 'jumbotron');
-
-    //var heading = createElement('h1', null, 'Outlook calendar app');
-    //jumbotron.appendChild(heading);
 
     var lead = createElement('p', 'lead',
         'Application allows you to fetch the calendar of logged in user.');
@@ -132,8 +115,6 @@ function showCalendar(user, events) {
     // Create jumbotron
     var jumbotron = createElement('div', 'jumbotron');
 
-    //var heading = createElement('h1', null, 'Outlook calendar app');
-    //jumbotron.appendChild(heading);
 
     var lead = createElement('p', 'lead',
         'Application allows you to fetch the calendar of logged in user.');
@@ -157,12 +138,6 @@ function showCalendar(user, events) {
 
     let div = document.createElement('div');
 
-    div.appendChild(createElement('h1', 'mb-3', 'Calendar'));
-
-    let newEventButton = createElement('button', 'btn btn-light btn-sm mb-3', 'New meeting');
-    newEventButton.setAttribute('onclick', 'showNewEventForm();');
-    div.appendChild(newEventButton);
-
     let table = createElement('table', 'table');
     div.appendChild(table);
 
@@ -175,10 +150,6 @@ function showCalendar(user, events) {
     let organizer = createElement('th', null, 'Organizer');
     organizer.setAttribute('scope', 'col');
     headerrow.appendChild(organizer);
-
-    let subject = createElement('th', null, 'Subject');
-    subject.setAttribute('scope', 'col');
-    headerrow.appendChild(subject);
 
     let start = createElement('th', null, 'Start');
     start.setAttribute('scope', 'col');
@@ -200,22 +171,15 @@ function showCalendar(user, events) {
                 let organizercell = createElement('td', null, event.organizer.emailAddress.name);
                 eventrow.appendChild(organizercell);
 
-                let subjectcell = createElement('td', null, event.subject);
-                eventrow.appendChild(subjectcell);
-
                 // Use moment.utc() here because times are already in the user's
                 // preferred timezone, and we don't want moment to try to change them to the
                 // browser's timezone
                 let startcell = createElement('td', null,
-                    moment.utc(event.start.dateTime).format('YYYY-MM-DD HH:mm'));
-		//let startcell = createElement('td', null,
-                //    moment.utc(event.start.dateTime).format('M/D/YY h:mm A'));
+                moment.utc(event.start.dateTime).format('YYYY-MM-DD HH:mm'));
                 eventrow.appendChild(startcell);
 
                 let endcell = createElement('td', null,
-                    moment.utc(event.end.dateTime).format('YYYY-MM-DD HH:mm'));
-		//let endcell = createElement('td', null,
-                //    moment.utc(event.end.dateTime).format('M/D/YY h:mm A'));
+                moment.utc(event.end.dateTime).format('YYYY-MM-DD HH:mm'));
                 eventrow.appendChild(endcell);
             }
         }
@@ -316,7 +280,6 @@ function updatePage(view, data) {
             showError(data);
             break;
         case Views.home:
-            //showWelcomeMessage(user);
             showCalendar(user, data);
             break;
         case Views.calendar:
