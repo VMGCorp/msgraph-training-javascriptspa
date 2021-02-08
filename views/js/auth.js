@@ -46,17 +46,39 @@ async function getToken() {
             account: msalClient.getAccountByUsername(account)
         };
 
-        const silentResult = await msalClient.acquireTokenSilent(silentRequest);
-        return silentResult.accessToken;
+        // try five times to get the token silently
+        for (let i=0; i<5; i++) {
+            if (i > 0) {
+                await sleep(2000);
+            }
+            try {
+                const silentResult = await msalClient.acquireTokenSilent(silentRequest);
+                return silentResult.accessToken;
+            } catch (er) {
+                if (i < 4) {
+                    continue;
+                } else {
+                    throw er;
+                }
+            }
+
+        }
+
     } catch (silentError) {
         // If silent requests fails with InteractionRequiredAuthError,
         // attempt to get the token interactively
         if (silentError instanceof msal.InteractionRequiredAuthError) {
+            // if all silent requests failed, get the token interactively
             const interactiveResult = await msalClient.acquireTokenPopup(msalRequest);
             return interactiveResult.accessToken;
         } else {
+            // if all silent requests failed, throw error
             throw silentError;
         }
     }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 

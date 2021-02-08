@@ -33,7 +33,7 @@ async function getEvents() {
         // Get midnight on the start of the current week in the user's timezone,
         // but in UTC. For example, for Pacific Standard Time, the time value would be
         // 07:00:00Z
-        let startOfWeek = moment.tz('America/Los_Angeles').startOf('week').utc();
+        let startOfWeek = moment.tz('Europe/Vilnius').startOf('week').utc();
         // Set end of the view to 7 days after start of week
         let endOfWeek = moment(startOfWeek).add(7, 'day');
 
@@ -63,6 +63,7 @@ async function getEvents() {
                 message: 'Error getting events',
                 debug: error
             });
+            setTimeout( getEvents, 11000);
         }
     }
 }
